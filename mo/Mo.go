@@ -1,4 +1,4 @@
-package Mo
+package mo
 
 import (
 	"fmt"
