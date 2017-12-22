@@ -7,8 +7,8 @@ import (
 )
 
 func TestConfig_Get(t *testing.T) {
-	d := molog.New()
-	config := New("app.json")
+	d := molog.GetInstance()
+	config := GetInstance("app.json")
 	var s string
 	var i int
 	d.Info(config.GetConfig("ip", &s), s)

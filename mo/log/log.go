@@ -9,7 +9,7 @@ import (
 type Mo struct {
 }
 
-func New() *Mo {
+func GetInstance() *Mo {
 	m := &Mo{}
 	return m
 }

@@ -21,7 +21,7 @@ var instance *Config
 var once sync.Once
 
 // New creates a new Config object.
-func New(filename string) *Config {
+func GetInstance(filename string) *Config {
 	once.Do(func() {
 		instance = &Config{filename, nil}
 		instance.ReloadConfig()
