@@ -1,4 +1,4 @@
-package mo
+package config
 
 //mostly borrowed from https://github.com/joshbetz/config
 
@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
+	"sync"
 )
 
 // Config represents a configuration file.
@@ -16,15 +17,20 @@ type Config struct {
 	cache    *map[string]interface{}
 }
 
+var instance *Config
+var once sync.Once
+
 // New creates a new Config object.
 func New(filename string) *Config {
-	config := Config{filename, nil}
-	config.Reload()
-	return &config
+	once.Do(func() {
+		instance = &Config{filename, nil}
+		instance.ReloadConfig()
+	})
+	return instance
 }
 
 // Get retreives a Config option into a passed in pointer or returns an error.
-func (config *Config) Get(key string, v interface{}) error {
+func (config *Config) GetConfig(key string, v interface{}) error {
 	var val interface{}
 
 	env, set := os.LookupEnv(key)
@@ -95,7 +101,7 @@ func (config *Config) Get(key string, v interface{}) error {
 }
 
 // Reload clears the config cache.
-func (config *Config) Reload() error {
+func (config *Config) ReloadConfig() error {
 	cache, err := primeCacheFromFile(config.filename)
 	config.cache = cache
 
